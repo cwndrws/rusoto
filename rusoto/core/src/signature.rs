@@ -104,8 +104,14 @@ impl SignedRequest {
             Some(ref p) => p.to_string(),
             None => {
                 match self.region {
-                    Region::Custom(_) => "http".to_owned(),
-                    _                => "https".to_owned()
+                    Region::Custom(ref hostname) => {
+                        if hostname.starts_with("http://") {
+                            "http".to_owned()
+                        } else {
+                            "https".to_owned()
+                        }
+                    },
+                    _ => "https".to_owned()
                 }
             }
         }
